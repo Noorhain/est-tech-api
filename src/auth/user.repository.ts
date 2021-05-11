@@ -7,11 +7,12 @@ import {
 import { UserRoles } from './user-roles.enum';
 import { NewUserDto } from './dto/new-user-dto';
 import * as bcrypt from 'bcrypt';
+import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async signUp(userDto: NewUserDto): Promise<User> {
-    const { email, password, lastName = '', firstName = '' } = userDto;
+  async signUp(newUserDto: NewUserDto): Promise<User> {
+    const { email, password, lastName = '', firstName = '' } = newUserDto;
     const user = new User();
     user.email = email;
     user.password = password;
@@ -33,18 +34,18 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  /*  async validateUserPassword(
+  async validateUserPassword(
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<string> {
-    const { username, password } = authCredentialsDto;
-    const user = await this.findOne({ username });
+    const { email, password } = authCredentialsDto;
+    const user = await this.findOne({ email });
 
     if (user && (await user.validatePassword(password))) {
-      return user.username;
+      return user.email;
     } else {
       return null;
     }
-  }*/
+  }
 
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
