@@ -3,6 +3,7 @@ import { User } from './user.entity';
 import {
   ConflictException,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { UserRoles } from './user-roles.enum';
 import { NewUserDto } from './dto/new-user-dto';
@@ -11,6 +12,8 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+  private logger = new Logger('UserRepository');
+
   async signUp(newUserDto: NewUserDto): Promise<User> {
     const { email, password, lastName = '', firstName = '' } = newUserDto;
     const user = new User();
@@ -18,7 +21,7 @@ export class UserRepository extends Repository<User> {
     user.password = password;
     user.last_name = lastName;
     user.first_name = firstName;
-    user.role = UserRoles.READER;
+    user.roleId = UserRoles.READER;
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
 
@@ -29,6 +32,7 @@ export class UserRepository extends Repository<User> {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('email already exists');
       } else {
+        this.logger.error('Error al crear el usuario: ' + error.message);
         throw new InternalServerErrorException();
       }
     }
