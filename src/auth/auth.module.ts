@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepository } from './user.repository';
+import { UserRepository } from './repository/user.repository';
 import { JwtModule } from '@nestjs/jwt';
 import * as config from 'config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
-import { RoleRepository } from './role.repository';
+import { RoleRepository } from './repository/role.repository';
+import { PostRepository } from '../post/repository/post.repository';
 
 const jwtConfig = config.get('jwt');
 
@@ -20,10 +21,10 @@ const jwtConfig = config.get('jwt');
         expiresIn: jwtConfig.expiresIn, //segundos = 1 hora
       },
     }),
-    TypeOrmModule.forFeature([UserRepository, RoleRepository]),
+    TypeOrmModule.forFeature([UserRepository, RoleRepository, PostRepository]),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
-  exports: [JwtStrategy],
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

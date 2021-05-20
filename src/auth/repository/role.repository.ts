@@ -1,4 +1,4 @@
-import { Role } from './role.entity';
+import { Role } from '../entity/role.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(Role)

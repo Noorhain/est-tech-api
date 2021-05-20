@@ -3,12 +3,15 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 
 import * as bcrypt from 'bcrypt';
 import { Role } from './role.entity';
+import { Post } from '../../post/entity/post.entity';
+import { UserRoles } from '../user-roles.enum';
 
 @Entity()
 @Unique(['email']) // Define aquellas columnas de las BD que deben ser unique
@@ -31,11 +34,14 @@ export class User extends BaseEntity {
   @Column()
   first_name: string;
 
-  @ManyToOne((type) => Role, (role) => role.user, { eager: false })
-  role: Role;
+  @ManyToOne((type) => Role, (role) => role.user, {
+    eager: false,
+    nullable: false,
+  })
+  role: UserRoles;
 
-  @Column()
-  roleId: number;
+  @OneToMany((type) => Post, (post) => post.user, { eager: false })
+  post: Post[];
 
   // Cuando se llama a este método, la aplicación ya ha localizado (si existe) a un usuario con el correo que se ha enviado desde el cliente. Lo que hace es encriptar el password que se ha recibido también desde el cliente con la salt que se encuentra en la base de datos. Luego se comprueba si el resultado coincide con la clave encriptada que hay en la BD (por eso, en el return se coteja contra THIS.password.
   async validatePassword(password: string): Promise<boolean> {
