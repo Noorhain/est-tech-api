@@ -3,9 +3,10 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { PostPage } from './post-page.entity';
+import { Page } from './page.entity';
 
 @Entity()
 export class PageType extends BaseEntity {
@@ -15,8 +16,8 @@ export class PageType extends BaseEntity {
   @Column()
   description: string;
 
-  @ManyToOne((type) => PostPage, (postPage: PostPage) => postPage.pageType, {
+  @OneToMany((type) => Page, (page: Page) => page.pageType, {
     eager: false,
   })
-  postPage: PostPage;
+  page: Page[];
 }
