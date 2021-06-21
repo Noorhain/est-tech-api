@@ -1,19 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
-import * as config from 'config';
+import { Logger, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const serverConfig = config.get('server');
-  const logger = new Logger('Bootstrap');
-  const port = process.env.PORT || serverConfig.port;
+  const logger = new Logger();
   const app = await NestFactory.create(AppModule);
-  if (process.env.NODE_ENV === 'development') {
-    app.enableCors();
-  }
-
+  app.enableCors();
+  app.useGlobalPipes(new ValidationPipe());
+  const port = process.env.PORT;
   await app.listen(port);
-  logger.log(`API listening on port ${port}`);
+  logger.log(`Application listening on port ${port}`);
 }
 
 bootstrap();
