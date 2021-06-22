@@ -4,6 +4,7 @@ import {
   Get,
   Logger,
   Param,
+  ParseIntPipe,
   Post,
   UseGuards,
   UsePipes,
@@ -14,7 +15,6 @@ import { PostService } from './post.service';
 import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/entity/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
-import { PostType } from './post-type.enum';
 
 @Controller('post')
 @UseGuards(AuthGuard())
@@ -31,10 +31,10 @@ export class PostController {
   @Post('/createpost')
   @UsePipes(ValidationPipe)
   createPost(
+   // @Body('postCategory', ParseIntPipe) postCategory: number,
     @Body() createPostDto: CreatePostDto,
-    @Param('type') postType: PostType,
     @GetUser() user: User,
   ): any {
-    return this.postService.createPost(createPostDto, postType, user);
+    return this.postService.createPost(createPostDto, user);
   }
 }

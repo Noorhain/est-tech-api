@@ -8,15 +8,13 @@ import { InternalServerErrorException, Logger } from '@nestjs/common';
 export class PostRepository extends Repository<Post> {
   private logger = new Logger('PostRepository');
 
-  async createPostEntry(
-    createPostDto: CreatePostDto,
-    user: User,
-  ): Promise<any> {
-    const { title, body, status, entryCategory } = createPostDto;
+  async createPost(createPostDto: CreatePostDto, user: User): Promise<any> {
+    const { title, body, status, postCategory } = createPostDto;
     const post = new Post();
     post.title = title;
     post.body = body;
     post.status = status;
+    post.postCategory = postCategory;
     post.user = user;
 
     try {

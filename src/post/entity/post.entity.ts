@@ -43,5 +43,5 @@ export class Post extends BaseEntity {
     nullable: false,
   })
   @JoinColumn()
-  postCategory: PostCategory;
+  postCategory: number;
 }

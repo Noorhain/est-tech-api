@@ -3,7 +3,6 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { User } from '../auth/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostRepository } from './repository/post.repository';
-import { PostType } from './post-type.enum';
 
 @Injectable()
 export class PostService {
@@ -16,15 +15,7 @@ export class PostService {
     return 'We are getting';
   }
 
-  async createPost(
-    createPostDto: CreatePostDto,
-    postType: PostType,
-    user: User,
-  ): Promise<any> {
-    if (postType === 'entry') {
-      return this.postRepository.createPostEntry(createPostDto, user);
-    } else {
-      //return this.postRepository.createPostPage();
-    }
+  async createPost(createPostDto: CreatePostDto, user: User): Promise<any> {
+    return this.postRepository.createPost(createPostDto, user);
   }
 }

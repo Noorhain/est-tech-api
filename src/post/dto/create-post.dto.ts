@@ -1,6 +1,5 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { ContentStatus } from '../content-status.enum';
-import { EntryCategory } from '../entry-category.enum';
 
 export class CreatePostDto {
   @IsString()
@@ -14,11 +13,7 @@ export class CreatePostDto {
   @IsNotEmpty()
   status: ContentStatus;
 
-  @IsNumber()
+  //@IsNumber() Cuando lo procesemos vía cliente
   @IsNotEmpty()
-  entryCategory?: EntryCategory;
-
-  @IsNumber()
-  @IsNotEmpty()
-  pageType?: any;
+  postCategory?: number;
 }
