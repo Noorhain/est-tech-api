@@ -1,4 +1,4 @@
 export enum PostCategory {
-  ENTRY = 'entry',
-  POST = 'post',
+  ENTRY = 1,
+  POST = 2,
 }

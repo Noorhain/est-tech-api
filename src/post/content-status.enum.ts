@@ -1,5 +1,4 @@
 export enum ContentStatus {
-  DRAFT = 'DRAFT',
-  PUBLISHED = 'PUBLISHED',
-  DELETED = 'DELETED',
+  DRAFT = 1,
+  PUBLISHED = 2,
 }
