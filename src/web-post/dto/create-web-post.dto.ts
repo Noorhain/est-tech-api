@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class EditPostDto {
+export class CreateWebPostDto {
   @IsString()
   @IsNotEmpty()
   title: string;
@@ -12,5 +12,5 @@ export class EditPostDto {
   status: number;
 
   @IsNotEmpty()
-  postCategory: number;
+  postCategory?: number;
 }

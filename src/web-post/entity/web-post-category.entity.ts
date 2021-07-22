@@ -5,16 +5,16 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Post } from './post.entity';
+import { WebPost } from './web-post.entity';
 
 @Entity()
-export class PostCategory extends BaseEntity {
+export class WebPostCategory extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   description: string;
 
-  @OneToMany((type) => Post, (post) => post.postCategory)
-  post: Post[];
+  @OneToMany((type) => WebPost, (post) => post.postCategory)
+  post: WebPost[];
 }

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from '../auth/repository/user.repository';
-import { PostRepository } from './repository/post.repository';
-import { PostCategory } from './entity/post-category.entity';
+import { WebPostRepository } from './repository/web-post.repository';
+import { WebPostCategory } from './entity/web-post-category.entity';
 import { PageType } from './entity/page-type.entity';
-import { PostController } from './post.controller';
+import { WebPostController } from './web-post.controller';
 import { AuthModule } from '../auth/auth.module';
-import { PostService } from './post.service';
+import { WebPostService } from './web-post.service';
 import { Page } from './entity/page.entity';
 
 @Module({
@@ -14,13 +14,13 @@ import { Page } from './entity/page.entity';
     AuthModule,
     TypeOrmModule.forFeature([
       UserRepository,
-      PostRepository,
-      PostCategory,
+      WebPostRepository,
+      WebPostCategory,
       PageType,
       Page,
     ]),
   ],
-  controllers: [PostController],
-  providers: [PostService],
+  controllers: [WebPostController],
+  providers: [WebPostService],
 })
-export class PostModule {}
+export class WebPostModule {}

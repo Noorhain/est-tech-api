@@ -13,34 +13,44 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { PostService } from './post.service';
+import { WebPostService } from './web-post.service';
 import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/entity/user.entity';
-import { CreatePostDto } from './dto/create-post.dto';
-import { PostCategoryValidationPipe } from './pipes/post-category-validation.pipe';
+import { CreateWebPostDto } from './dto/create-web-post.dto';
+import { WebPostCategoryValidationPipe } from './pipes/web-post-category-validation.pipe';
 import { ContentStatusValidationPipe } from './pipes/content-status-validation.pipe';
-import { EditPostDto } from './dto/edit-post.dto';
+import { EditWebPostDto } from './dto/edit-web-post.dto';
+import { WebPost } from './entity/web-post.entity';
 
 @Controller('post')
-@UseGuards(AuthGuard())
-export class PostController {
+export class WebPostController {
   private logger = new Logger('PostController');
 
-  constructor(private postService: PostService) {}
+  constructor(private postService: WebPostService) {}
 
-  @Get('/test')
-  getTest(): string {
-    return this.postService.getTest();
+  /*
+   * Obtiene un extracto paginado de los últimos registros en la tabla posts para mostrar en listados y enumeraciones
+   */
+  @Get('/postsSummary')
+  GetLatestPostsSummary(): Promise<[WebPost[], number]> {
+    return this.postService.getLatestPostsSummary();
+  }
+
+  @Get('/myposts')
+  @UseGuards(AuthGuard())
+  getAllPostsByUser(@GetUser() user: User): Promise<WebPost[]> {
+    return this.postService.getAllPostsByUser(user);
   }
 
   @Post('/createpost')
+  @UseGuards(AuthGuard())
   @UsePipes(ValidationPipe)
   createPost(
-    @Body('postCategory', ParseIntPipe, PostCategoryValidationPipe)
+    @Body('postCategory', ParseIntPipe, WebPostCategoryValidationPipe)
     postCategory: number,
     @Body('status', ParseIntPipe, ContentStatusValidationPipe) status: number,
     @Body()
-    createPostDto: CreatePostDto,
+    createPostDto: CreateWebPostDto,
     @GetUser() user: User,
   ): Promise<any> {
     createPostDto.postCategory = postCategory;
@@ -49,21 +59,23 @@ export class PostController {
   }
 
   @Patch('/:id/edit')
+  @UseGuards(AuthGuard())
   @UsePipes(ValidationPipe)
   updatePostContent(
     @Param('id', ParseIntPipe) id: number,
-    @Body('postCategory', ParseIntPipe, PostCategoryValidationPipe)
+    @Body('postCategory', ParseIntPipe, WebPostCategoryValidationPipe)
     postCategory: number,
     @Body('status', ParseIntPipe, ContentStatusValidationPipe) status: number,
-    @Body() editPostDto: EditPostDto,
+    @Body() editPostDto: EditWebPostDto,
     @GetUser() user: User,
-  ): Promise<any> {
+  ): Promise<WebPost> {
     editPostDto.postCategory = postCategory;
     editPostDto.status = status;
     return this.postService.updatePostContent(id, user.id, editPostDto);
   }
 
-  @Delete('/delete/:id')
+  @Delete('/:id/delete')
+  @UseGuards(AuthGuard())
   deletePost(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,

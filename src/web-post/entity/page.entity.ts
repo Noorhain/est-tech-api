@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { User } from '../../auth/entity/user.entity';
 import { ContentStatus } from '../content-status.enum';
-import { PostCategory } from './post-category.entity';
+import { WebPostCategory } from './web-post-category.entity';
 import { PageType } from './page-type.entity';
 
 @Entity()

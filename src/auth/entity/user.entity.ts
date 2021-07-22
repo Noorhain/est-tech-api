@@ -10,7 +10,7 @@ import {
 
 import * as bcrypt from 'bcrypt';
 import { Role } from './role.entity';
-import { Post } from '../../post/entity/post.entity';
+import { WebPost } from '../../web-post/entity/web-post.entity';
 import { UserRoles } from '../user-roles.enum';
 
 @Entity()
@@ -40,8 +40,8 @@ export class User extends BaseEntity {
   })
   role: UserRoles;
 
-  @OneToMany((type) => Post, (post) => post.user, { eager: false })
-  post: Post[];
+  @OneToMany((type) => WebPost, (post) => post.user, { eager: false })
+  post: WebPost[];
 
   // Cuando se llama a este método, la aplicación ya ha localizado (si existe) a un usuario con el correo que se ha enviado desde el cliente. Lo que hace es encriptar el password que se ha recibido también desde el cliente con la salt que se encuentra en la base de datos. Luego se comprueba si el resultado coincide con la clave encriptada que hay en la BD (por eso, en el return se coteja contra THIS.password.
   async validatePassword(password: string): Promise<boolean> {

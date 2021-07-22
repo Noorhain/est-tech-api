@@ -7,7 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { RoleRepository } from './repository/role.repository';
-import { PostRepository } from '../post/repository/post.repository';
+import { WebPostRepository } from '../web-post/repository/web-post.repository';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
@@ -24,7 +24,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         },
       }),
     }),
-    TypeOrmModule.forFeature([UserRepository, RoleRepository, PostRepository]),
+    TypeOrmModule.forFeature([
+      UserRepository,
+      RoleRepository,
+      WebPostRepository,
+    ]),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

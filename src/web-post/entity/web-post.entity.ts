@@ -10,10 +10,10 @@ import {
 } from 'typeorm';
 import { User } from '../../auth/entity/user.entity';
 import { ContentStatus } from '../content-status.enum';
-import { PostCategory } from './post-category.entity';
+import { WebPostCategory } from './web-post-category.entity';
 
 @Entity()
-export class Post extends BaseEntity {
+export class WebPost extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -38,7 +38,7 @@ export class Post extends BaseEntity {
   })
   user: User;
 
-  @ManyToOne((type) => PostCategory, (postCategory) => postCategory.post, {
+  @ManyToOne((type) => WebPostCategory, (postCategory) => postCategory.post, {
     eager: false,
     nullable: false,
   })
