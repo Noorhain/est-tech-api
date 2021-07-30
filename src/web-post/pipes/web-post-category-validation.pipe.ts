@@ -1,5 +1,5 @@
-import { BadRequestException, PipeTransform } from "@nestjs/common";
-import { PostCategory } from "../web-post-category.enum";
+import { BadRequestException, PipeTransform } from '@nestjs/common';
+import { PostCategory } from '../web-post-category.enum';
 
 export class WebPostCategoryValidationPipe implements PipeTransform {
   readonly allowedCategories = [PostCategory.NEWS, PostCategory.TESTS];

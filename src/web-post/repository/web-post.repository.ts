@@ -87,7 +87,7 @@ export class WebPostRepository extends Repository<WebPost> {
   }
 
   async getLatestPostsSummary(): Promise<[WebPost[], number]> {
-    const query = this.createQueryBuilder('post');
+    const query = this.createQueryBuilder('post').limit(7);
     try {
       const webPosts = await query.getManyAndCount();
       return webPosts;

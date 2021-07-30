@@ -14,7 +14,12 @@ export class WebPostService {
   ) {}
 
   async getLatestPostsSummary(): Promise<[WebPost[], number]> {
-    return this.webPostRepository.getLatestPostsSummary();
+    return this.webPostRepository
+      .getLatestPostsSummary()
+      .then((latestPosts: [WebPost[], number]): [WebPost[], number] => {
+        this.getExcerpt(latestPosts[0]);
+        return latestPosts;
+      });
   }
 
   async getAllPostsByUser(user: User): Promise<WebPost[]> {
@@ -51,5 +56,14 @@ export class WebPostService {
     webPost.status = status;
     webPost.postCategory = postCategory;
     return this.webPostRepository.updatePostContent(webPost);
+  }
+
+  getExcerpt(latestPosts: WebPost[]): WebPost[] {
+    latestPosts.forEach((webPost: WebPost): void => {
+      if (webPost.body.length > 200) {
+        webPost.body = webPost.body.substring(0, 200);
+      }
+    });
+    return latestPosts;
   }
 }
