@@ -36,3 +36,4 @@ lerna-debug.log*
 #Other
 /README.md
 /documentation/
+/src/assets/
